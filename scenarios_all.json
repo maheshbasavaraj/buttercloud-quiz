@@ -1,0 +1,1573 @@
+[
+  {
+    "id": "scn-001",
+    "title": "Personal Developer Blog (Noob)",
+    "level": "noob",
+    "summary": "A fast, low-maintenance personal blog focused on reading experience and minimal hosting cost.",
+    "key_priorities": [
+      "Performance (very fast load times)",
+      "Low maintenance & cost",
+      "Simple authoring (git-based)",
+      "Good typography and accessibility"
+    ],
+    "user_stories": [
+      "Visitors browse a list of posts and read articles.",
+      "Author publishes new posts via git (Markdown).",
+      "Images must be optimized automatically."
+    ],
+    "scale_and_performance": {
+      "traffic": "Low to moderate (thousands/month)",
+      "latency_target": "LCP < 500ms for primary pages"
+    },
+    "security_and_compliance": {
+      "privacy": "No personal data collected",
+      "security": "Protect from XSS and supply-chain risks"
+    },
+    "questions": [
+      {
+        "id": "q-frontend",
+        "prompt": "Choose the frontend approach.",
+        "options": [
+          {
+            "option": "Static Site Generator (Hugo/Astro/Eleventy)",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Produces pre-rendered HTML, excellent performance, minimal infra and cost."
+          },
+          {
+            "option": "Next.js / SvelteKit (SSG/ISR hybrid)",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Flexible for future dynamic features; slightly more complexity."
+          },
+          {
+            "option": "Client-side SPA (React CRA/Vite CSR)",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Works but loses SEO and static performance benefits."
+          },
+          {
+            "option": "Full CMS (WordPress hosted)",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Overkill; requires server + DB, higher maintenance and security exposure."
+          }
+        ]
+      },
+      {
+        "id": "q-data",
+        "prompt": "How should content be stored and authored?",
+        "options": [
+          {
+            "option": "Markdown files in repo (git)",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Versioned, simple workflow, zero infra."
+          },
+          {
+            "option": "Headless CMS (Sanity/Contentful)",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Great for non-dev authors but adds cost and dependency."
+          },
+          {
+            "option": "SQLite with admin UI",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Works but increases maintenance for marginal benefit."
+          },
+          {
+            "option": "Realtime DB (Firebase)",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Unnecessary complexity and cost for static content."
+          }
+        ]
+      },
+      {
+        "id": "q-deploy",
+        "prompt": "Select deployment platform.",
+        "options": [
+          {
+            "option": "Vercel / Netlify",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Zero-config builds, CDN, free tier—ideal for static blogs."
+          },
+          {
+            "option": "GitHub Pages",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Simple and free but fewer features (no built-in serverless)."
+          },
+          {
+            "option": "S3 + CloudFront",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Works but requires infra setup and CI integration."
+          },
+          {
+            "option": "Shared FTP hosting",
+            "rating": "Poor",
+            "score": -1,
+            "justification": "Manual, error-prone, lacks automation."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "scn-002",
+    "title": "Banking Payments API (Secure)",
+    "level": "advanced",
+    "summary": "A backend service that handles customer payments, settlement, reconciliation and audit for a mid-sized bank.",
+    "key_priorities": [
+      "Security & Compliance (PCI-DSS, audit trails)",
+      "Accuracy & Consistency of transactions",
+      "High reliability (99.99% uptime)",
+      "Auditability and observability"
+    ],
+    "user_stories": [
+      "Customers can initiate payments and view statuses.",
+      "System must reconcile transactions and produce auditable logs.",
+      "Admin can pause/high-risk transactions."
+    ],
+    "scale_and_performance": {
+      "traffic": "Moderate (thousands TPS during peaks)",
+      "consistency": "Strong consistency required for ledgers"
+    },
+    "security_and_compliance": {
+      "regulations": [
+        "PCI-DSS",
+        "local banking laws"
+      ],
+      "security": "Encryption at rest/in transit, HSM for keys, strong auth"
+    },
+    "questions": [
+      {
+        "id": "q-backend",
+        "prompt": "Choose backend language / framework for core payments engine.",
+        "options": [
+          {
+            "option": "Java + Spring Boot / Kotlin",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Strong typing, mature ecosystem, enterprise-grade security and observability integrations."
+          },
+          {
+            "option": "Golang",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Excellent concurrency and performance; slightly smaller ecosystem for enterprise banking specifics."
+          },
+          {
+            "option": "Node.js (Express)",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Faster to build prototypes but less suited for strict type safety and CPU-bound reconciliation tasks."
+          },
+          {
+            "option": "Python (Django/Flask)",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Productive for data work but not ideal for high-throughput, strongly consistent transactional engines."
+          }
+        ]
+      },
+      {
+        "id": "q-db",
+        "prompt": "Choose the primary datastore for ledger and transactions.",
+        "options": [
+          {
+            "option": "Relational DB with ACID (Postgres/Oracle)",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Supports ACID transactions, strong consistency, mature backup & replication strategies."
+          },
+          {
+            "option": "NewSQL (CockroachDB/Google Spanner)",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Global scale and strong consistency but operationally more complex/costly."
+          },
+          {
+            "option": "Document DB (MongoDB)",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Flexible schema but harder to guarantee multi-row transactional consistency without extra work."
+          },
+          {
+            "option": "Event-sourced ledger on Kafka + cold store",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Powerful pattern but risky if implemented without experienced team—must still ensure durable ordering and reconciliation."
+          }
+        ]
+      },
+      {
+        "id": "q-security",
+        "prompt": "Select authentication and key management.",
+        "options": [
+          {
+            "option": "OAuth2 + mTLS + HSM for key storage",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Defense-in-depth: strong client auth, mutual TLS and hardware-backed keys for signing."
+          },
+          {
+            "option": "OAuth2 + KMS (cloud) for keys",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Strong and practical; cloud KMS reduces operational burden."
+          },
+          {
+            "option": "JWTs with local key files",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Works but key rotation and protection are manual and risky for banking."
+          },
+          {
+            "option": "Simple API keys over HTTPS",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Insufficient for high-risk financial operations."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "scn-003",
+    "title": "Real-time Collaboration Whiteboard (Scaling & Realtime)",
+    "level": "intermediate",
+    "summary": "A collaborative whiteboard web app where many users can draw, add sticky notes, and see real-time updates.",
+    "key_priorities": [
+      "Low-latency real-time sync",
+      "Conflict resolution / eventual consistency",
+      "Scalable concurrent users per room",
+      "Client performance (mobile + desktop)"
+    ],
+    "user_stories": [
+      "Multiple users join the same board and see others' changes in <200ms.",
+      "Boards persist to storage and can be shared.",
+      "Offline edits should sync correctly when reconnected."
+    ],
+    "scale_and_performance": {
+      "traffic": "Variable—many concurrent rooms with dozens of users each",
+      "latency_target": "<200ms for update propagation in same region"
+    },
+    "security_and_compliance": {
+      "privacy": "User authentication and board access control",
+      "security": "Rate-limiting and abuse prevention"
+    },
+    "questions": [
+      {
+        "id": "q-realtime",
+        "prompt": "Choose the real-time transport.",
+        "options": [
+          {
+            "option": "WebSockets with a message broker (Redis/NSQ)",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Low-latency bi-directional, widely supported, good for live collaboration."
+          },
+          {
+            "option": "WebRTC (data channels) P2P with SFU",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Lower server bandwidth for large media; P2P can be complex for many peers."
+          },
+          {
+            "option": "Long-polling / Server-Sent Events",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Works for light real-time needs but not ideal for highly interactive drawing."
+          },
+          {
+            "option": "Periodic polling",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Too high-latency and inefficient for interactive collaboration."
+          }
+        ]
+      },
+      {
+        "id": "q-sync",
+        "prompt": "How to handle collaborative conflict resolution?",
+        "options": [
+          {
+            "option": "CRDTs (client + server merge)",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Enables offline edits and deterministic merges with eventual consistency."
+          },
+          {
+            "option": "Operational Transform (OT) with server arbitration",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Proven approach (Google Docs) but more complex to implement correctly."
+          },
+          {
+            "option": "Last-write-wins on server",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Simple but leads to lost edits; poor UX."
+          },
+          {
+            "option": "Lock-based editing per region",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Blocks collaboration and increases friction."
+          }
+        ]
+      },
+      {
+        "id": "q-storage",
+        "prompt": "Choose persistent storage for board snapshots.",
+        "options": [
+          {
+            "option": "Object store for snapshots + small DB for metadata (S3 + Postgres)",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Cost-effective, scalable, and separates large binary blobs from structured metadata."
+          },
+          {
+            "option": "Document DB storing full board state",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Simpler model but may become costly for big boards."
+          },
+          {
+            "option": "In-memory DB with periodic backups",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Fast but risky if backups/failover aren't robust."
+          },
+          {
+            "option": "Store everything in a message queue",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Queues are not durable long-term storage; inappropriate."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "scn-004",
+    "title": "E‑commerce Marketplace (Consistency & Payments)",
+    "level": "intermediate-advanced",
+    "summary": "A multi-vendor marketplace that supports product listings, orders, payments and seller dashboards.",
+    "key_priorities": [
+      "Transactional consistency for orders and inventory",
+      "Payment integration and fraud prevention",
+      "Scalability during sales events",
+      "Good seller tooling and observability"
+    ],
+    "user_stories": [
+      "Buyers place orders and receive confirmations immediately.",
+      "Inventory must decrement atomically to avoid oversell.",
+      "Sellers see sales reports and manage listings."
+    ],
+    "scale_and_performance": {
+      "traffic": "Peaks during sales (spikes of tens of thousands of concurrent users)",
+      "availability": "High during peak sales events"
+    },
+    "security_and_compliance": {
+      "payments": "PCI scope minimized via tokenized payments",
+      "fraud": "Behavioral detection and rate-limits"
+    },
+    "questions": [
+      {
+        "id": "q-arch",
+        "prompt": "Choose an architecture for order processing.",
+        "options": [
+          {
+            "option": "Monolithic service with strong DB transactions",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Simpler to implement but can be hard to scale for spikes."
+          },
+          {
+            "option": "Microservices with event-driven transactional sagas",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Enables independent scaling, decoupling and eventual consistency with compensating actions."
+          },
+          {
+            "option": "Serverless functions per action with shared DB",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Fast to scale for spikes but needs careful transaction design."
+          },
+          {
+            "option": "Heavy reliance on third-party marketplace platform",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "May limit customization and vendor lock-in risk."
+          }
+        ]
+      },
+      {
+        "id": "q-db",
+        "prompt": "Inventory model choice.",
+        "options": [
+          {
+            "option": "Single relational DB with row-level transactions",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Simple and safe for small scale; may become bottleneck at massive scale."
+          },
+          {
+            "option": "CQRS with read models (elastic search) and write DB (Postgres)",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Separates read/write concerns, helps scale reads during events and prevents oversells."
+          },
+          {
+            "option": "Distributed KV store (Redis only)",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Fast but needs strong measures to avoid consistency issues."
+          },
+          {
+            "option": "No DB; rely on payment provider for stock",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Not viable—inventory must be owned by platform for accurate listings."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "scn-005",
+    "title": "IoT Fleet Management (Edge & Intermittent Connectivity)",
+    "level": "intermediate",
+    "summary": "Manage thousands of edge devices (vehicles/drones) that occasionally go offline and must report telemetry and receive OTA updates.",
+    "key_priorities": [
+      "Resilient offline behaviour and sync",
+      "Efficient bandwidth and power usage",
+      "Secure OTA updates and device identity",
+      "Scalable ingestion pipeline for telemetry"
+    ],
+    "user_stories": [
+      "Devices buffer telemetry offline and sync when online.",
+      "Admin triggers OTA update with rollback support.",
+      "System detects rogue devices and quarantines them."
+    ],
+    "scale_and_performance": {
+      "devices": "Thousands of devices with bursty connectivity",
+      "ingestion": "High write throughput during reconnect windows"
+    },
+    "security_and_compliance": {
+      "device_identity": "Mutual TLS & device certificates",
+      "data": "Encrypted telemetry and secure OTA signing"
+    },
+    "questions": [
+      {
+        "id": "q-protocol",
+        "prompt": "Choose device-to-cloud protocol.",
+        "options": [
+          {
+            "option": "MQTT with QoS controls",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Lightweight, handles intermittent connectivity and supports QoS and retained messages."
+          },
+          {
+            "option": "HTTP REST with retry/backoff",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Simple but heavier on bandwidth and less ideal for intermittent connections."
+          },
+          {
+            "option": "CoAP (UDP-based)",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Very lightweight but less common tooling and more operational complexity."
+          },
+          {
+            "option": "Plain TCP sockets with custom protocol",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Reinventing the wheel; fragile and hard to secure/scale."
+          }
+        ]
+      },
+      {
+        "id": "q-ota",
+        "prompt": "How to implement OTA updates safely?",
+        "options": [
+          {
+            "option": "Signed artifacts + version pinning + staged rollout",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Ensures authenticity, allows rollback and reduces blast radius."
+          },
+          {
+            "option": "Push full images to all devices immediately",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Risky—no staged rollout or verification."
+          },
+          {
+            "option": "Delta updates with unsigned patches",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Efficient but insecure without signing/verification."
+          },
+          {
+            "option": "Require manual USB updates in safe facilities",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Secure but operationally costly and slow."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "scn-006",
+    "title": "Healthcare Teleconsultation (HIPAA/Privacy)",
+    "level": "advanced",
+    "summary": "Video + chat teleconsultation platform for clinics requiring strict privacy, audit trails, and scheduling.",
+    "key_priorities": [
+      "Privacy & compliance (HIPAA/GDPR)",
+      "Secure video and chat",
+      "Auditability & access control",
+      "High availability for scheduled sessions"
+    ],
+    "user_stories": [
+      "Patients book appointments and join encrypted video calls.",
+      "Doctors access patient's history during session with strict RBAC.",
+      "Audit logs for all access and changes must be retained."
+    ],
+    "scale_and_performance": {
+      "users": "Moderate (concurrent sessions in hundreds)",
+      "availability": "High during clinic hours"
+    },
+    "security_and_compliance": {
+      "regulations": [
+        "HIPAA",
+        "GDPR"
+      ],
+      "requirements": "Encrypted PII, signed BAAs, retention policies"
+    },
+    "questions": [
+      {
+        "id": "q-video",
+        "prompt": "Choose video architecture for secure consults.",
+        "options": [
+          {
+            "option": "Managed HIPAA-compliant video (e.g., Twilio with BAA)",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Reduces compliance burden, provides encryption and media relay."
+          },
+          {
+            "option": "Self-hosted WebRTC SFU (Jitsi/Janus) in VPC",
+            "rating": "Good",
+            "score": 2,
+            "justification": "More control and potential cost savings but requires compliance ops and hardening."
+          },
+          {
+            "option": "P2P WebRTC for calls",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Lower server cost but harder to audit, record, and enforce corporate network controls."
+          },
+          {
+            "option": "Unencrypted third-party video embedding",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Non-compliant and insecure for PHI."
+          }
+        ]
+      },
+      {
+        "id": "q-auth",
+        "prompt": "Authentication & session security.",
+        "options": [
+          {
+            "option": "OIDC with MFA + short-lived session tokens and device binding",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Strong identity guarantees, helps prevent session hijack."
+          },
+          {
+            "option": "OAuth2 with passwordless email links",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Convenient and reasonable security but needs careful link expiry and phishing mitigation."
+          },
+          {
+            "option": "Simple username/password with HTTPS",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Basic protection but weak for sensitive healthcare flows."
+          },
+          {
+            "option": "No auth (guest links)",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Violates privacy and compliance requirements."
+          }
+        ]
+      },
+      {
+        "id": "q-obsv",
+        "prompt": "Observability choice for platform operations.",
+        "options": [
+          {
+            "option": "Prometheus + Grafana + Jaeger + ELK for logs (centralized)",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Full-stack monitoring, tracing and centralized logs; essential for audits and incident response."
+          },
+          {
+            "option": "Cloud provider managed monitoring (CloudWatch/Stackdriver)",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Simpler to operate but limited customization and potential cost."
+          },
+          {
+            "option": "Basic app-level logs to files",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Works for small setups but poor for debugging and compliance reporting."
+          },
+          {
+            "option": "No monitoring",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Unacceptable for production healthcare systems."
+          }
+        ]
+      }
+    ],
+    "interview_style_questions": [
+      "How would you design end-to-end encryption for stored consultations while enabling authorized auditing?",
+      "Explain how you'd implement role-based access (doctor, nurse, admin, patient) and emergency break-the-glass flows."
+    ]
+  },
+  {
+    "id": "scn-007",
+    "title": "Short-form Video Social App (High Throughput)",
+    "level": "advanced",
+    "summary": "Mobile-first app for short videos with feeds, likes, and personalized recommendations.",
+    "key_priorities": [
+      "Media throughput & storage",
+      "Low-latency feed generation",
+      "Cost-effective CDN delivery",
+      "Moderate ML personalization"
+    ],
+    "user_stories": [
+      "Users upload short videos, watch personalized feeds, like/comment, and share."
+    ],
+    "scale_and_performance": {
+      "uploads": "Thousands/day",
+      "viewing": "Millions/day"
+    },
+    "security_and_compliance": {
+      "content_moderation": "Automated and manual review required"
+    },
+    "questions": [
+      {
+        "id": "q-media",
+        "prompt": "Choose media storage & processing.",
+        "options": [
+          {
+            "option": "Object store (S3) + serverless transcode (Lambda or Cloud Functions)",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Scales cheaply, integrates with CDN and event-driven processing."
+          },
+          {
+            "option": "Self-hosted storage + FFmpeg workers on VMs",
+            "rating": "Good",
+            "score": 2,
+            "justification": "More control and possibly cost-effective at massive scale but higher ops burden."
+          },
+          {
+            "option": "Store original on DB and transcode on upload synchronously",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Slow uploads and poor user experience."
+          },
+          {
+            "option": "Store media in relational DB blobs",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Very inefficient and costly for large media."
+          }
+        ]
+      },
+      {
+        "id": "q-feed",
+        "prompt": "Feed generation approach.",
+        "options": [
+          {
+            "option": "Precomputed feed per user (pipeline + Redis for fast reads)",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Low-latency reads suitable for massive view traffic."
+          },
+          {
+            "option": "Real-time compute on request using ranking model",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Simpler but high CPU per request; can cause latency spikes."
+          },
+          {
+            "option": "Simple reverse-chronological feed",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Easy to implement but poor personalization."
+          },
+          {
+            "option": "Push all feeds via email/notifications only",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Not applicable to video consumption UX."
+          }
+        ]
+      },
+      {
+        "id": "q-cost",
+        "prompt": "Cost-control strategy for serving video at scale.",
+        "options": [
+          {
+            "option": "Use CDN with tiered caching + object lifecycle + spot instances for batch work",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Reduces egress and storage costs, uses cheap compute for non-critical processing."
+          },
+          {
+            "option": "Always-on large VMs and dedicated storage",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Expensive and inefficient for variable workloads."
+          },
+          {
+            "option": "Rely on fully managed third-party hosting with high egress fees",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Simple but can be costly as scale grows."
+          },
+          {
+            "option": "Edge functions for transcoding on upload",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Low latency but may be limited by function runtimes and cost per execution."
+          }
+        ]
+      }
+    ],
+    "interview_style_questions": [
+      "Design an upload pipeline that minimizes user's perceived latency and ensures eventual consistency of feed.",
+      "How would you prevent hot objects (viral videos) from overloading origin servers during a spike?"
+    ]
+  },
+  {
+    "id": "scn-008",
+    "title": "ML Model Serving Platform (Batch & Online)",
+    "level": "intermediate-advanced",
+    "summary": "Platform to serve ML models for low-latency online inference and periodic batch re-training & backfilling.",
+    "key_priorities": [
+      "Low-latency inference (<50ms)",
+      "Feature store consistency",
+      "Model versioning & rollback",
+      "Cost-effective GPU usage"
+    ],
+    "user_stories": [
+      "Models serve personalized recommendations in <50ms.",
+      "Data science teams can deploy new models and roll back quickly."
+    ],
+    "scale_and_performance": {
+      "requests": "10k-100k QPS low-latency",
+      "batch": "daily re-train jobs"
+    },
+    "security_and_compliance": {
+      "data": "PII handling and feature access control"
+    },
+    "questions": [
+      {
+        "id": "q-serving",
+        "prompt": "Choose serving infrastructure for online inference.",
+        "options": [
+          {
+            "option": "Autoscaling Kubernetes with model servers (KFServing/Triton)",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Flexible, supports GPUs and real-time autoscaling with versioning."
+          },
+          {
+            "option": "Serverless functions for inference",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Simple to operate but cold-starts and GPU access are limited."
+          },
+          {
+            "option": "Monolithic web app hosting models in-process",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Simple but hard to scale and risky for isolation."
+          },
+          {
+            "option": "Batch-only inference with cache for online",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Cannot meet low-latency online requirements reliably."
+          }
+        ]
+      },
+      {
+        "id": "q-featurestore",
+        "prompt": "Feature store choice for low-latency features.",
+        "options": [
+          {
+            "option": "Dedicated feature store (Feast) + low-latency serving DB",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Ensures consistent online/offline features and low latency lookups."
+          },
+          {
+            "option": "Materialized views in Redis from ETL jobs",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Fast but more fragile to keep in sync during re-trains."
+          },
+          {
+            "option": "Direct DB queries to OLTP DB",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "High latency and coupling with transactional systems."
+          },
+          {
+            "option": "Hardcode features in model deployment",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "No separation of concerns or reusability."
+          }
+        ]
+      },
+      {
+        "id": "q-cost",
+        "prompt": "Cost optimization for GPU usage.",
+        "options": [
+          {
+            "option": "Use GPU spot/preemptible instances for batch training and reserved for online",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Cheap for batch, reliable for latency-critical online workloads."
+          },
+          {
+            "option": "Always-on expensive GPU fleet",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Costly when utilization is low."
+          },
+          {
+            "option": "CPU-only inference with highly optimized models",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Works for small models but may not meet latency for complex models."
+          },
+          {
+            "option": "Offload to third-party ML serving providers with per-request pricing",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Reduces ops but can be expensive at scale."
+          }
+        ]
+      }
+    ],
+    "interview_style_questions": [
+      "How would you design model rollout and canarying to detect performance regressions?",
+      "Explain strategies to keep online and offline features consistent during retraining."
+    ]
+  },
+  {
+    "id": "scn-009",
+    "title": "B2B Analytics Dashboard (Security & Multi-tenant)",
+    "level": "intermediate",
+    "summary": "SaaS analytics dashboard for enterprise customers with multi-tenant isolation and exportable reports.",
+    "key_priorities": [
+      "Tenant isolation",
+      "Data export and retention policies",
+      "Role-based access",
+      "Interactive visualizations"
+    ],
+    "user_stories": [
+      "Admins invite tenant users and control data access.",
+      "Tenants run reports and export CSV/PDFs."
+    ],
+    "scale_and_performance": {
+      "tenants": "Hundreds",
+      "query_latency": "Sub-second for summary dashboards"
+    },
+    "security_and_compliance": {
+      "data_isolation": "Logical or physical isolation options"
+    },
+    "questions": [
+      {
+        "id": "q-multitenancy",
+        "prompt": "Multitenancy model.",
+        "options": [
+          {
+            "option": "Single-tenant DB per customer (schema per tenant)",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Strong isolation and compliance; higher cost but simpler reasoning for security."
+          },
+          {
+            "option": "Shared DB with row-level tenant column + RBAC",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Cost-effective but needs careful access control testing."
+          },
+          {
+            "option": "Shared DB + separate index per tenant",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Compromise but can be fragile at scale."
+          },
+          {
+            "option": "Single global dataset without tenant segregation",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Non-compliant and insecure."
+          }
+        ]
+      },
+      {
+        "id": "q-dashboard",
+        "prompt": "Frontend stack for interactive analytics.",
+        "options": [
+          {
+            "option": "React + WebAssembly for heavy client-side computation",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Powerful but adds engineering complexity."
+          },
+          {
+            "option": "React + D3/Plotly with server-side aggregation",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Balances interactivity with server-side performance and security."
+          },
+          {
+            "option": "Server-rendered charts as images only",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Low interactivity and UX."
+          },
+          {
+            "option": "Legacy Flash-like plugins",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Obsolete and insecure."
+          }
+        ]
+      },
+      {
+        "id": "q-obsv",
+        "prompt": "Observability & tenant-aware logging.",
+        "options": [
+          {
+            "option": "Structured logs with tenant-id, metrics per-tenant and quota alerts",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Enables debugging and SLA reporting per tenant."
+          },
+          {
+            "option": "Aggregate metrics only",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Insufficient for tenant investigations."
+          },
+          {
+            "option": "No tenant tags in logs",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Cannot attribute issues to tenants."
+          },
+          {
+            "option": "Per-tenant isolated monitoring stacks",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Strong isolation but higher operational cost."
+          }
+        ]
+      }
+    ],
+    "interview_style_questions": [
+      "How would you design tenant onboarding with secure data isolation and cost tracking?",
+      "What strategies prevent a noisy neighbor tenant from impacting others' performance?"
+    ]
+  },
+  {
+    "id": "scn-010",
+    "title": "Small Business POS (Offline-first Cashier App)",
+    "level": "noob-intermediate",
+    "summary": "Point-of-sale system for small shops that must operate offline and sync sales later.",
+    "key_priorities": [
+      "Offline-first reliability",
+      "Simple UX for cashiers",
+      "Atomic order capture",
+      "Low-cost devices"
+    ],
+    "user_stories": [
+      "Cashiers can take sales when network is down; sync when online.",
+      "Managers can reconcile daily reports."
+    ],
+    "scale_and_performance": {
+      "terminals": "10s per store",
+      "sync": "Periodic batches"
+    },
+    "security_and_compliance": {
+      "payments": "Use tokenized card readers to avoid PCI scope"
+    },
+    "questions": [
+      {
+        "id": "q-client",
+        "prompt": "Choose client platform.",
+        "options": [
+          {
+            "option": "Electron desktop app with local DB (SQLite)",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Cross-platform, supports local storage and offline sync."
+          },
+          {
+            "option": "PWA with IndexedDB and service workers",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Lightweight, easy installs, offline-capable, lower footprint."
+          },
+          {
+            "option": "Native mobile apps only",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Good UX but maintenance overhead for platforms."
+          },
+          {
+            "option": "Browser-only app without offline support",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Fails offline requirement."
+          }
+        ]
+      },
+      {
+        "id": "q-sync",
+        "prompt": "Sync strategy for offline sales.",
+        "options": [
+          {
+            "option": "Local append-only log with idempotent server reconciliation",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Resilient to retries and ensures no duplicates."
+          },
+          {
+            "option": "Sync via manual CSV upload by manager",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Workable but error-prone and slow."
+          },
+          {
+            "option": "One-shot full DB replace on reconnect",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Dangerous and likely to lose recent transactions."
+          },
+          {
+            "option": "Optimistic sync with simple last-write wins",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Simple but needs care to avoid lost transactions."
+          }
+        ]
+      },
+      {
+        "id": "q-payments",
+        "prompt": "How to handle card payments to reduce PCI scope?",
+        "options": [
+          {
+            "option": "Use PCI-compliant tokenized card readers and redirect flows",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Reduces scope and complexity for compliance."
+          },
+          {
+            "option": "Locally store card data encrypted",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "High risk and compliance burden."
+          },
+          {
+            "option": "Process payments through a third-party SDK with hosted fields",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Practical compromise for many SMBs."
+          },
+          {
+            "option": "Cash-only system",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Simple but impractical for many customers."
+          }
+        ]
+      }
+    ],
+    "interview_style_questions": [
+      "Explain an idempotent reconciliation algorithm used to merge offline sales.",
+      "How would you test offline sync behavior at scale for a franchise with many stores?"
+    ]
+  },
+  {
+    "id": "scn-011",
+    "title": "Ad Exchange / Real-Time Bidding (Low Latency)",
+    "level": "advanced",
+    "summary": "RTB platform to bid on ad impressions with sub-100ms decision windows.",
+    "key_priorities": [
+      "Ultra-low latency (<100ms)",
+      "High throughput (millions QPS)",
+      "Fairness and fraud detection",
+      "Cost-effective real-time compute"
+    ],
+    "user_stories": [
+      "DSPs connect and bid in real-time; publishers see revenue reports."
+    ],
+    "scale_and_performance": {
+      "qps": "Millions during peak",
+      "latency": "<100ms decision loop"
+    },
+    "security_and_compliance": {
+      "privacy": "Ad privacy and opt-outs"
+    },
+    "questions": [
+      {
+        "id": "q-latency",
+        "prompt": "Choose runtime for bid decisioning.",
+        "options": [
+          {
+            "option": "Highly-optimized C++/Rust bidding engines colocated in edge POPs",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Lowest latency and predictable performance."
+          },
+          {
+            "option": "Golang microservices with tuned GC",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Good balance of performance and developer productivity."
+          },
+          {
+            "option": "Node.js bidding services",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "May struggle under extreme QPS with GC and single-threaded model."
+          },
+          {
+            "option": "Python for bid logic",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Too slow for strict latency requirements."
+          }
+        ]
+      },
+      {
+        "id": "q-infra",
+        "prompt": "Placement of servers to meet latency goals.",
+        "options": [
+          {
+            "option": "Colocate in provider edge/POP near exchange endpoints",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Reduces network RTT and improves decision time."
+          },
+          {
+            "option": "Single central region with high-capacity links",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Higher RTT may miss bids."
+          },
+          {
+            "option": "Serverless functions across regions",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Flexible but cold starts can add jitter."
+          },
+          {
+            "option": "Only on-premise data centers far from exchanges",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Bad for latency-critical RTB."
+          }
+        ]
+      },
+      {
+        "id": "q-obsv",
+        "prompt": "Observability for latency spikes and dropped bids.",
+        "options": [
+          {
+            "option": "Real-time sampling traces + p99/p999 latency dashboards and alerting",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Necessary to detect tail latency affecting revenue."
+          },
+          {
+            "option": "Daily batch logs only",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Too slow to diagnose real-time issues."
+          },
+          {
+            "option": "Basic request counters and error rates",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Useful but not sufficient for tail latency analysis."
+          },
+          {
+            "option": "Synthetic bid traffic monitoring from edge locations",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Helps detect regional issues proactively."
+          }
+        ]
+      }
+    ],
+    "interview_style_questions": [
+      "How would you design a stateless bidding flow to maximize throughput?",
+      "Describe methods to ensure fairness and prevent bid shading or fraud."
+    ]
+  },
+  {
+    "id": "scn-012",
+    "title": "Cryptocurrency Exchange (Security & Compliance)",
+    "level": "advanced",
+    "summary": "Order-matching and custody platform for crypto assets, with strict security and regulatory needs.",
+    "key_priorities": [
+      "Key custody & theft prevention",
+      "Transactional integrity & proof-of-reserves",
+      "Regulatory KYC/AML compliance",
+      "High availability"
+    ],
+    "user_stories": [
+      "Users deposit/withdraw funds, trade, and view balances.",
+      "Platform must maintain provable reserves and prevent double-spends."
+    ],
+    "scale_and_performance": {
+      "trading": "High throughput, millisecond-level matching possible",
+      "availability": "24/7"
+    },
+    "security_and_compliance": {
+      "requirements": "KYC, AML, cold/hot wallet separation"
+    },
+    "questions": [
+      {
+        "id": "q-custody",
+        "prompt": "Key management for user funds.",
+        "options": [
+          {
+            "option": "Hardware wallets for cold storage + HSM-backed hot wallets with multisig",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Industry practice: minimizes theft risk and supports audits."
+          },
+          {
+            "option": "Cloud KMS alone for all keys",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Simpler but increases risk if cloud account compromised."
+          },
+          {
+            "option": "Store private keys encrypted in DB",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "High risk and not acceptable for exchange custody."
+          },
+          {
+            "option": "Third-party custodial provider integration",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Reduces operational burden but requires trust and costs."
+          }
+        ]
+      },
+      {
+        "id": "q-matching",
+        "prompt": "Order matching architecture.",
+        "options": [
+          {
+            "option": "In-memory matching engine with durable WAL and periodic snapshots",
+            "rating": "Best",
+            "score": 3,
+            "justification": "High performance and crash-recovery; industry standard."
+          },
+          {
+            "option": "Relational DB driven matching with transactions",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Simpler but may not meet latency and throughput needs."
+          },
+          {
+            "option": "Event-sourced matching via Kafka and consumers",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Scalable and auditable but adds complexity."
+          },
+          {
+            "option": "Outsource matching to a third-party exchange",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Loss of control and potential compliance issues."
+          }
+        ]
+      },
+      {
+        "id": "q-compliance",
+        "prompt": "KYC/AML strategy.",
+        "options": [
+          {
+            "option": "Integrate with reputable KYC providers + in-house AML analytics",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Balances speed, coverage and regulatory compliance."
+          },
+          {
+            "option": "Manual KYC only",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Slow and costly; impractical at scale."
+          },
+          {
+            "option": "No KYC (decentralized approach)",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Regulatory risk and limited fiat on/off ramps."
+          },
+          {
+            "option": "Basic checks with deferred verification for small limits",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Trade-off between friction and compliance for low-value users."
+          }
+        ]
+      }
+    ],
+    "interview_style_questions": [
+      "Explain how you'd design proof-of-reserves and verifiable audits to reassure users.",
+      "How would you architect withdrawal rate limits and hot-wallet thresholds to limit exposure?"
+    ]
+  },
+  {
+    "id": "scn-013",
+    "title": "Supply Chain Tracking (Blockchain & Provenance)",
+    "level": "intermediate-advanced",
+    "summary": "Track goods across multiple organizations, ensure provenance and tamper-evident records for compliance.",
+    "key_priorities": [
+      "Provenance & tamper-evidence",
+      "Inter-organization trust",
+      "Efficient on-chain/off-chain balance",
+      "Scalability"
+    ],
+    "user_stories": [
+      "Partners record handoffs; regulators can audit provenance."
+    ],
+    "scale_and_performance": {
+      "events": "Millions of handoffs/year",
+      "latency": "Minutes acceptable for writes"
+    },
+    "security_and_compliance": {
+      "auditing": "Immutable logs for regulatory inspections"
+    },
+    "questions": [
+      {
+        "id": "q-ledger",
+        "prompt": "Ledger approach.",
+        "options": [
+          {
+            "option": "Permissioned blockchain (Hyperledger) with off-chain data and on-chain hashes",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Good balance of trust and performance for consortiums."
+          },
+          {
+            "option": "Public blockchain for all transactions",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Transparent but expensive and slow for high-volume records."
+          },
+          {
+            "option": "Centralized DB with cryptographic hashes stored externally",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Simpler and cheaper; weaker decentralization guarantees."
+          },
+          {
+            "option": "Email-based manual attestations",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Not tamper-evident or scalable."
+          }
+        ]
+      },
+      {
+        "id": "q-integration",
+        "prompt": "How should partners integrate their systems?",
+        "options": [
+          {
+            "option": "Standardized event APIs + signed messages + webhooks",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Interoperable and auditable across organizations."
+          },
+          {
+            "option": "FTP/CSV batch uploads",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Works but brittle and hard to audit."
+          },
+          {
+            "option": "Direct DB replication between partners",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Security and governance nightmare."
+          },
+          {
+            "option": "SaaS gateway adapters per partner",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Practical but needs maintenance."
+          }
+        ]
+      }
+    ],
+    "interview_style_questions": [
+      "Describe tradeoffs between storing full payload on-chain vs only hashes.",
+      "How would you handle a partner that refuses to adopt the standard API?"
+    ]
+  },
+  {
+    "id": "scn-014",
+    "title": "Education Mobile App (High UX Priority)",
+    "level": "noob-intermediate",
+    "summary": "Mobile app for microlearning with quizzes, spaced repetition, and offline access.",
+    "key_priorities": [
+      "UX & accessibility",
+      "Offline access for students",
+      "Small app size and battery-friendly",
+      "Simple analytics for teachers"
+    ],
+    "user_stories": [
+      "Students complete lessons and quizzes offline and sync progress.",
+      "Teachers view class-level analytics."
+    ],
+    "scale_and_performance": {
+      "users": "Moderate, many low-end devices",
+      "latency": "Local-first interactions"
+    },
+    "security_and_compliance": {
+      "data": "Minimal PII, parental consent flows for minors"
+    },
+    "questions": [
+      {
+        "id": "q-frontend",
+        "prompt": "Mobile frontend approach.",
+        "options": [
+          {
+            "option": "Native iOS + Android (Swift/Kotlin)",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Best UX but higher development cost."
+          },
+          {
+            "option": "React Native / Flutter cross-platform",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Strong tradeoff: near-native UX with lower dev cost."
+          },
+          {
+            "option": "Hybrid webview apps (Cordova)",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Poor performance on low-end devices."
+          },
+          {
+            "option": "PWA only",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Limited native integration and offline installability on some platforms."
+          }
+        ]
+      },
+      {
+        "id": "q-offline",
+        "prompt": "Offline storage for progress & content.",
+        "options": [
+          {
+            "option": "IndexedDB/SQLite on-device with delta sync",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Robust offline-first approach suitable for low-connectivity environments."
+          },
+          {
+            "option": "Cache content in service worker only",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Limited for structured progress data."
+          },
+          {
+            "option": "Always-online and block usage offline",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Fails requirement."
+          },
+          {
+            "option": "Store everything in localStorage",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Storage limits and reliability issues."
+          }
+        ]
+      },
+      {
+        "id": "q-analytics",
+        "prompt": "Teacher analytics backend.",
+        "options": [
+          {
+            "option": "Batch ETL to a data warehouse (BigQuery/Redshift) + BI dashboards",
+            "rating": "Best",
+            "score": 3,
+            "justification": "Enables rich analytics and scaling."
+          },
+          {
+            "option": "Real-time dashboards with expensive OLAP store",
+            "rating": "Good",
+            "score": 2,
+            "justification": "Faster insights but higher cost."
+          },
+          {
+            "option": "Generate CSV exports on demand",
+            "rating": "Acceptable",
+            "score": 1,
+            "justification": "Simple but limited interactivity."
+          },
+          {
+            "option": "No analytics",
+            "rating": "Poor",
+            "score": 0,
+            "justification": "Undermines teachers' needs."
+          }
+        ]
+      }
+    ],
+    "interview_style_questions": [
+      "How would you design a spaced-repetition algorithm and sync user progress across devices?",
+      "Explain accessibility considerations for low-vision users on mobile."
+    ]
+  }
+]

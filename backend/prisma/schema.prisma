@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  role      String
+  skillTags String
+  stats     Json?
+}
+
+model Scenario {
+  id          String   @id @default(cuid())
+  title       String
+  description Json
+  difficulty  String
+  domainTags  String
+  creatorId   String
+  components  ScenarioComponent[]
+}
+
+model ScenarioComponent {
+  id              String   @id @default(cuid())
+  scenarioId      String
+  scenario        Scenario @relation(fields: [scenarioId], references: [id])
+  componentType   String
+  weight          Float
+  allowedOptions  Json
+}
+
+model Option {
+  id                String   @id @default(cuid())
+  label             String
+  componentType     String
+  prosCons          Json
+  scoreIfSelected   Float
+  compatibilityTags String
+}
+
+model Submission {
+  id          String   @id @default(cuid())
+  userId      String
+  scenarioId  String
+  selections  Json
+  score       Float
+  confidence  Float
+  feedback    Json?
+}
+
+model Explanation {
+  id              String @id @default(cuid())
+  scenarioId      String
+  component       String
+  correctOptions  Json
+  rationaleText   String
+}

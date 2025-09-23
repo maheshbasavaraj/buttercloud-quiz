@@ -1,0 +1,43 @@
+# Dependencies
+/frontend/node_modules
+/backend/node_modules
+
+# Build output
+/frontend/.next
+/backend/dist
+
+# Logs
+/backend/*.log
+
+# Environment variables
+/backend/.env
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Temporary files
+~$*.md
+
+# Backup files
+*.bak
+*backup.md
+*backup_*.md
+
+# Copied files
+* - Copy.md
+* - Copy (3).md
+
+# Other misc files
+/misc/grok.txt
+/misc/remaining_scenarios.md
+/misc/scenario_Kimi.txt
+/misc/scenarios_additional.md
+/misc/temp.md
+
+# Zip files
+*.zip
+
+# Scenario files
+*_scenarios.md
+scenarios.md

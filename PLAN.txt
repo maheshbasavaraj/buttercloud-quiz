@@ -1,0 +1,206 @@
+# 1 — Product concept (one-liner)
+
+An interactive platform that gives realistic project requirements (scenarios) and challenges users to select the best tech-stack and architecture choices across frontend, backend, DB, infra, and patterns — then scores and teaches them why choices are right/wrong.
+
+# 2 — Key user personas
+
+* Learner: software engineer / architect practicing decisions for interviews or real projects.
+* Instructor / Employer: creates scenario sets, reviews learners, runs group contests.
+* Content Creator: writes scenarios and model answers (rubrics).
+* Admin: platform management, analytics.
+
+# 3 — Core features (must-haves)
+
+1. **Scenario Player (Interactive Quiz):** Presents a scenario with functional + non-functional requirements, constraints, and optional hints. For each component (UI, API, DB, infra, caching, messaging, monitoring), the user picks from curated options or writes free-text suggestions.
+2. **Scoring & Rubric Engine:** Each option has weighted correctness and reasoning. The engine scores selections, shows a breakdown, and gives feedback (explanations + trade-offs).
+3. **Scenario Editor:** UI for content creators to author scenarios, define options, weightings, and model answers.
+4. **Progress & Stats:** Track user accuracy by domain (frontend, DB, scale), time spent, improvement over time.
+5. **Explainability / Learning:** After submission show (a) gold-standard architecture, (b) line-by-line rationale, (c) alternative valid designs and trade-offs.
+6. **Peer Review / Multiplayer:** Compare decisions, leaderboards, challenge friends, pair design mode.
+7. **Variant Generation:** Generate similar scenarios by changing constraints (budget, latency, regulatory) so learners practice trade-offs.
+8. **Interview Mode / Timed Challenges:** For practice under pressure (optional).
+9. **Recommendation Engine:** Suggest “next best scenario” based on weaknesses. Could later use ML on user history.
+10. **Templates & Examples:** Pre-built scenarios (e.g., Instagram-like, streaming game platform, real-time chat) with annotated solutions.
+
+# 4 — Example scenario (ready-to-use)
+
+**Title:** Social Media — “SnapGram” web app
+**Requirements:**
+
+* Public feed with image + short video posts, personalized ranking.
+* Real-time notifications when tagged.
+* Uploads: 10k/day, peak concurrent 5000 viewers.
+* Non-functional: Latency <200ms for feed load, budget-conscious, need easy dev iteration, eventual globalization.
+  **Question (Frontend choice):** Which frontend approach would you pick for the web client?
+  Options:
+
+1. Vanilla JS + server-rendered HTML
+2. React + client-side rendering (CRA)
+3. React + Next.js (server components / SSR)
+4. Angular (full framework)
+   **Correct answer (example):** 3 — React + Next.js (Server Components).
+   **Rubric (short):**
+
+* +3 points: SSR/Server Components reduce time-to-first-byte (good for SEO and fast feed load).
+* +2 points: Next.js built-in image handling helps video thumbnails.
+* -1 point: Slightly higher infra complexity vs CRA.
+  **Backend question:** Pick DB for posts & user metadata:
+* A: MongoDB
+* B: PostgreSQL (sharded)
+* C: DynamoDB (NoSQL)
+* D: Cassandra
+  **Sample reasoning:** If you want strong relational queries and transactions for user relationships, Postgres; if you favor predictable single-digit millisecond reads at scale and want serverless, DynamoDB may be better. Score accordingly and give explanation.
+
+# 5 — Scoring & feedback system (detailed)
+
+* Each scenario broken into components: frontend, backend, storage, cache, messaging, infra, monitoring. Each component has:
+
+  * **Options** (curated list + “other” free-text).
+  * **Weights:** importance relative to requirements. (E.g., storage might be 30% for write-heavy app.)
+  * **Option tags:** pros/cons, trade-offs, typical usage patterns.
+* **Scoring rules:** Sum(weight × option\_score). Option\_score is prefilled by content creator (0..1) plus partial credit for combos.
+* **Combination bonuses/penalties:** If user chooses a coherent combo (e.g., Next.js + Vercel + CDN), give bonus. If they choose inconsistent combo (e.g., heavy SSR with strictly serverless functions without warmers), apply penalty.
+* **Explanations:** For every chosen option show: why it fits/misfits the requirements; alternatives; quick links to docs/articles.
+* **Confidence field:** Ask user to rate their confidence — track calibration (confidence vs correctness).
+
+# 6 — UX / Flow (learner)
+
+1. Pick scenario or “Auto-generated scenario” (random constraints).
+2. Read concise spec + constraints + optional metrics.
+3. Choose tech for each component (clickable tiles or dropdown). Optionally enter free-text rationale.
+4. Submit → immediate scoring + breakdown + gold architecture visualization (diagram) + suggested reading.
+5. Review “what-if” toggle: change one constraint and see how the recommended architecture changes.
+
+# 7 — Content model & minimal DB schema (conceptual)
+
+Tables / Entities:
+
+* `users` (id, name, role, skill\_tags, stats)
+* `scenarios` (id, title, description, difficulty, domain\_tags, creator\_id)
+* `scenario_components` (scenario\_id, component\_type, weight, allowed\_options JSON)
+* `options` (id, label, component\_type, pros\_cons, score\_if\_selected, compatibility\_tags)
+* `submissions` (id, user\_id, scenario\_id, selections JSON, score, confidence, feedback)
+* `explanations` (scenario\_id, component, correct\_options, rationale\_text)
+* `leaderboards`, `badges`, `review_comments`
+
+# 8 — Recommended tech stack & architecture
+
+(choose modern, developer-friendly stack so the platform *itself* is a good demo of product design)
+
+**Frontend:**
+
+* React + Next.js (app router) — server components for fast rendering and SEO. Tailwind CSS for UI. Component library (Radix / shadcn).
+  **Backend / API:**
+* Node.js + TypeScript with NestJS or Express + GraphQL (Apollo) or REST (Fastify). GraphQL is nice for flexible UIs.
+  **Database:**
+* PostgreSQL (primary relational storage) + Redis for session + caching. Optionally a vector DB later for similarity / recommendations.
+  **Storage / Media:**
+* S3-compatible for diagrams, assets. Use CDN (CloudFront / Cloudflare) for static assets.
+  **Hosting / Infra:**
+* AWS/GCP/Azure or Vercel for frontend (Next.js). Containerize backend with Docker, deploy on ECS/EKS or Cloud Run. Use Terraform for infra-as-code.
+  **ML / Recommendation:**
+* Python microservice (FastAPI) for recommendation model. Start rule-based; evolve to lightweight ML (user embeddings, scenario embeddings).
+  **Authentication:**
+* Auth0 or NextAuth for SSO.
+  **Observability:**
+* Prometheus + Grafana, Sentry for errors, and analytics (Amplitude or Matomo).
+  **CI/CD:**
+* GitHub Actions for pipelines, automated tests, linting, previews.
+
+# 9 — MVP (what to build first) — deliverables (no timeline)
+
+* Core: user auth, scenario player (1-3 curated scenarios), scoring engine, result page with rationale.
+* Authoring: simple scenario editor for admins to create scenarios + options + weights.
+* Analytics: per-user basic stats and leaderboard.
+* Deploy: Next.js front + small Node API + Postgres managed DB + object storage.
+* Nice-to-have (post-MVP): multiplayer, ML recommender, free-text grading (NLP), export to PDF.
+
+# 10 — How to author scenarios (guidelines)
+
+* Keep scenarios \~1 page. Include: goals, scale numbers, constraints (budget, latency, compliance), and must-have vs optional features.
+* For each component supply 4–6 curated options plus “other” free-text. Include model answer with numeric weights and an explanation (3–5 bullet points).
+* Include at least one “distractor” option (plausible but suboptimal) to teach trade-offs.
+
+# 11 — Architecture for the “explain and score” engine
+
+* Rule-based engine first (deterministic): scenario JSON + user selections → compute score via pre-defined rules and combination bonuses.
+* Store rules as JSON or DSL. Example rule: `if frontend == nextjs and hosting == vercel => frontend_host_bonus += 0.1`
+* Later: add ML ranking that learns from high-scoring solutions and expert-labeled good solutions to produce recommended options.
+
+# 12 — Example scoring rule (JSON snippet)
+
+/\* (not executed) \*/
+
+```json
+{
+  "component": "frontend",
+  "options": {
+    "nextjs": {"base_score": 0.9, "notes": "SSR, image optimization"},
+    "react_csr": {"base_score": 0.7},
+    "vanilla": {"base_score": 0.3}
+  },
+  "combination_rules": [
+    {
+      "if": {"frontend": "nextjs", "hosting": "vercel"},
+      "bonus": 0.05,
+      "reason": "Vercel optimizations for Next.js"
+    }
+  ]
+}
+```
+
+# 13 — Validation, testing & quality
+
+* Seed scenarios with expert-reviewed model answers.
+* Unit tests for scoring engine and edge cases (inconsistent combos).
+* User testing: run closed beta with engineers, collect feedback about rubric clarity and fairness.
+* Calibration: track miscalibrated scenarios where expert vs crowd diverge; revisit rubrics.
+
+# 14 — Gamification & retention ideas
+
+* Badges by domain (DB Guru, Frontend Pro).
+* Timed challenges and weekly tournaments.
+* Explain-to-earn: require learner to submit their rationale to earn extra points (encourages reflection).
+* Peer review points: users who review/validate scenarios earn credits.
+
+# 15 — Monetization options
+
+* Freemium: free core scenarios, paid premium scenario packs and company-curated interview packs.
+* Teams / Enterprise: private scenario sets + analytics dashboard.
+* Certification: paid pro-certificates after passing a sequence of scenarios.
+
+# 16 — Security, privacy, and ethics
+
+* Anonymize user submissions when used for ML training.
+* Provide moderation for user-submitted scenario content.
+* Comply with GDPR if targeting Europe (data deletion, export).
+
+# 17 — Sample API endpoints (conceptual)
+
+* `POST /api/submit` — user submission JSON → returns score + breakdown
+* `GET /api/scenario/:id` — scenario payload (components + options + hints)
+* `POST /api/scenario` — create scenario (admin)
+* `GET /api/user/:id/stats` — progress & leaderboards
+
+# 18 — Minimum team to build MVP
+
+* 1 product manager / technical lead (content + rules)
+* 1–2 frontend engineers (React/Next)
+* 1 backend engineer (Node + DB + scoring engine)
+* 1 UX/designer (flows + scenario editor)
+* Optional: content expert(s) to write initial scenarios
+
+# 19 — Deployment & scaling notes
+
+* Keep scoring deterministic and stateless on first pass so it can scale horizontally behind load balancer.
+* Cache scenario payloads via CDN.
+* Use managed DB with read replicas if heavy reads for leaderboards.
+
+# 20 — Next steps I can do for you right now (pick any and I’ll produce instantly)
+
+* Generate 10 starter scenarios (different domains: social media, e-commerce, chat, streaming) with full rubrics and scoring.
+* Produce a detailed ERD and API spec (OpenAPI) for the MVP.
+* Mock up 4 UI screens (scenario list, scenario player, result page, editor) as clickable design wireframes or HTML/CSS.
+* Create a JSON schema for scenario + scoring rules and 2 sample scenarios encoded in that schema.
+
+
