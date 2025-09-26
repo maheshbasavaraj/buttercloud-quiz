@@ -58,7 +58,7 @@ app.post('/scenarios/:id/submit', authenticateToken, async (req, res) => {
     const selectedOption = allowedOptions?.options?.find((o: any) => o.id === selectedOptionId);
 
     if (selectedOption) {
-      score += selectedOption.score;
+      score += selectedOption.score || 0;
       feedback[component.componentType] = {
         justification: selectedOption.justification,
         rating: selectedOption.rating,
