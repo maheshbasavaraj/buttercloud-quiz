@@ -51,7 +51,7 @@ export default function ScenariosPage() {
       setFilteredScenarios(data);
 
       // Dynamically get unique levels
-      const uniqueLevels = Array.from(new Set(data.map((s: any) => s.difficulty.toLowerCase())));
+      const uniqueLevels: string[] = Array.from(new Set(data.map((s: any) => s.difficulty.toLowerCase())));
       const customOrder = ['noob', 'noob-intermediate', 'amateur', 'fresher', 'intermediate', 'intermediate-advanced', 'senior', 'advanced'];
       uniqueLevels.sort((a: string, b: string) => customOrder.indexOf(a) - customOrder.indexOf(b));
       setAvailableLevels(['all', ...uniqueLevels]);
