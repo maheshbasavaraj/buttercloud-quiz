@@ -1,7 +1,7 @@
+import 'dotenv/config'; // Import dotenv to load environment variables from .env file
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import cors from 'cors';
-import { authenticateToken } from './middleware/auth';
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 
