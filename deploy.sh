@@ -23,6 +23,9 @@ npm install || { echo "Error: Frontend npm install failed."; exit 1; }
 echo "Building frontend..."
 npm run build || { echo "Error: Frontend build failed."; exit 1; }
 
+# Navigate back to backend to restart it
+cd ../backend || { echo "Error: Could not navigate to backend directory."; exit 1; }
+
 echo "Restarting PM2 processes..."
 pm2 restart all || { echo "Error: PM2 restart failed."; exit 1; }
 
