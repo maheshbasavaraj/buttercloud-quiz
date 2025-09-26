@@ -29,7 +29,7 @@ export default function QuizPage() {
         router.push('/login'); // Redirect to login if no token
         return;
       }
-      const res = await fetch(`http://localhost:3001/scenarios/${scenarioId}`, {
+      const res = await fetch(`/api/scenarios/${scenarioId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -57,7 +57,7 @@ export default function QuizPage() {
         router.push('/login'); // Redirect to login if no token
         return;
       }
-      const res = await fetch(`http://localhost:3001/scenarios/${scenarioId}/submit`, {
+      const res = await fetch(`/api/scenarios/${scenarioId}/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

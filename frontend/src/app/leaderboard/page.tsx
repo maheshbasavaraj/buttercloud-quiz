@@ -23,7 +23,7 @@ export default function LeaderboardPage() {
         router.push('/login'); // Redirect to login if no token
         return;
       }
-      const res = await fetch('http://localhost:3001/leaderboard', {
+      const res = await fetch('/api/leaderboard', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

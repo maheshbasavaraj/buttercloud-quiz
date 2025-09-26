@@ -37,7 +37,7 @@ export default function ScenariosPage() {
         router.push('/login'); // Redirect to login if no token
         return;
       }
-      const res = await fetch('http://localhost:3001/scenarios', {
+      const res = await fetch('/api/scenarios', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
