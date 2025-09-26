@@ -55,7 +55,7 @@ app.post('/scenarios/:id/submit', authenticateToken, async (req, res) => {
   for (const component of scenario.components) {
     const selectedOptionId = selections[component.componentType];
     const allowedOptions = component.allowedOptions as any;
-    const selectedOption = allowedOptions.options.find((o: any) => o.id === selectedOptionId);
+    const selectedOption = allowedOptions?.options?.find((o: any) => o.id === selectedOptionId);
 
     if (selectedOption) {
       score += selectedOption.score;
@@ -87,18 +87,10 @@ app.post('/scenarios/:id/submit', authenticateToken, async (req, res) => {
   });
 
   // Update user's overall score
-  const user = await prisma.user.findUnique({
+  await prisma.user.update({
     where: { id: authenticatedUserId },
-    include: { submissions: true },
+    data: { overallScore: { increment: score } },
   });
-
-  if (user) {
-    const totalScore = user.submissions.reduce((sum, sub) => sum + sub.score, 0);
-    await prisma.user.update({
-      where: { id: authenticatedUserId },
-      data: { overallScore: totalScore },
-    });
-  }
 
   res.json({ score, feedback, submission });
 });
