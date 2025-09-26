@@ -24,7 +24,16 @@ export default function QuizPage() {
     if (!scenarioId) return;
     async function getScenario() {
       setLoading(true);
-      const res = await fetch(`http://localhost:3001/scenarios/${scenarioId}`);
+      const token = localStorage.getItem('appToken');
+      if (!token) {
+        router.push('/login'); // Redirect to login if no token
+        return;
+      }
+      const res = await fetch(`http://localhost:3001/scenarios/${scenarioId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
       if (!res.ok) throw new Error('Failed to fetch scenario');
       const data = await res.json();
       setScenario(data);
@@ -43,9 +52,17 @@ export default function QuizPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const token = localStorage.getItem('appToken');
+      if (!token) {
+        router.push('/login'); // Redirect to login if no token
+        return;
+      }
       const res = await fetch(`http://localhost:3001/scenarios/${scenarioId}/submit`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
         body: JSON.stringify({ selections }),
       });
       const data = await res.json();

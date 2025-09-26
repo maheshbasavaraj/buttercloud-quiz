@@ -1,6 +1,9 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import cors from 'cors';
+import { authenticateToken } from './middleware/auth';
+import { OAuth2Client } from 'google-auth-library';
+import jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
 const app = express();
@@ -30,7 +33,7 @@ app.get('/scenarios/:id', async (req, res) => {
   res.json(scenario);
 });
 
-app.post('/scenarios/:id/submit', async (req, res) => {
+app.post('/scenarios/:id/submit', authenticateToken, async (req, res) => {
   const { id } = req.params;
   const { selections } = req.body;
 
@@ -69,9 +72,11 @@ app.post('/scenarios/:id/submit', async (req, res) => {
     }
   }
 
+  const authenticatedUserId = (req as any).user.userId; // Get userId from authenticated user
+
   const submission = await prisma.submission.create({
     data: {
-      userId: 'user1', // Hardcoded for now
+      userId: authenticatedUserId,
       scenarioId: id,
       selections,
       score,
@@ -79,6 +84,20 @@ app.post('/scenarios/:id/submit', async (req, res) => {
       feedback,
     },
   });
+
+  // Update user's overall score
+  const user = await prisma.user.findUnique({
+    where: { id: authenticatedUserId },
+    include: { submissions: true },
+  });
+
+  if (user) {
+    const totalScore = user.submissions.reduce((sum, sub) => sum + sub.score, 0);
+    await prisma.user.update({
+      where: { id: authenticatedUserId },
+      data: { overallScore: totalScore },
+    });
+  }
 
   res.json({ score, feedback, submission });
 });
@@ -108,6 +127,77 @@ app.get('/submissions/:id', async (req, res) => {
     res.json({ submission, scenario });
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch submission' });
+  }
+});
+
+app.get('/leaderboard', authenticateToken, async (req, res) => {
+  const leaderboard = await prisma.user.findMany({
+    orderBy: {
+      overallScore: 'desc',
+    },
+    select: {
+      id: true,
+      name: true,
+      overallScore: true,
+    },
+  });
+  res.json(leaderboard);
+});
+
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const JWT_SECRET = process.env.JWT_SECRET;
+
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+
+app.post('/auth/google', async (req, res) => {
+  const { idToken } = req.body; // Google ID token from frontend
+
+  if (!idToken) {
+    return res.status(400).json({ error: 'ID token is required' });
+  }
+
+  try {
+    const ticket = await client.verifyIdToken({
+        idToken,
+        audience: GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    if (!payload) {
+      return res.status(401).json({ error: 'Invalid ID token payload' });
+    }
+
+    const googleId = payload['sub']; // Unique Google user ID
+    const email = payload['email']; // Assuming you add email to User model
+    const name = payload['name'];
+
+    let user = await prisma.user.findUnique({ where: { googleId } });
+
+    if (!user) {
+      // Create new user if not found
+      user = await prisma.user.create({
+        data: {
+          googleId,
+          name: name || 'Google User',
+          role: 'player', // Default role
+          skillTags: 'general',
+          overallScore: 0,
+          // Add email to User model if you want to store it
+          // email: email,
+        },
+      });
+    }
+
+    // Generate your application's JWT
+    if (!JWT_SECRET) {
+      throw new Error('JWT_SECRET is not defined');
+    }
+    const appToken = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
+
+    res.json({ token: appToken, user: { id: user.id, name: user.name, role: user.role } });
+
+  } catch (error) {
+    console.error('Google authentication error:', error);
+    res.status(401).json({ error: 'Authentication failed' });
   }
 });
 

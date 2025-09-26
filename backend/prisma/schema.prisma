@@ -11,11 +11,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  role      String
-  skillTags String
-  stats     Json?
+  id           String   @id @default(cuid())
+  name         String
+  role         String
+  skillTags    String
+  stats        Json?
+  overallScore Float    @default(0)
+  submissions  Submission[]
+  googleId     String?  @unique
 }
 
 model Scenario {
@@ -54,6 +57,7 @@ model Submission {
   score       Float
   confidence  Float
   feedback    Json?
+  user        User     @relation(fields: [userId], references: [id])
 }
 
 model Explanation {

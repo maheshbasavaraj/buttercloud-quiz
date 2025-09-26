@@ -11,6 +11,20 @@ async function main() {
   await prisma.scenario.deleteMany({});
   console.log('Cleared existing data.');
 
+  // Create a default user if one doesn't exist
+  await prisma.user.upsert({
+    where: { id: 'user1' },
+    update: {},
+    create: {
+      id: 'user1',
+      name: 'Default User',
+      role: 'player',
+      skillTags: 'general',
+      overallScore: 0,
+    },
+  });
+  console.log('Ensured default user exists.');
+
   const scenariosPath = path.join(__dirname, '..', '..', 'scenarios_simpler_plus_extras.json');
   if (!fs.existsSync(scenariosPath)) {
     console.log(`Skipping scenarios_all.json as it does not exist.`);

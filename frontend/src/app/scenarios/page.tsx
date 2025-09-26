@@ -11,25 +11,14 @@ import {
 } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { useRouter } from 'next/navigation';
 
 export default function ScenariosPage() {
   const [scenarios, setScenarios] = useState<any[]>([]);
   const [filteredScenarios, setFilteredScenarios] = useState<any[]>([]);
   const [level, setLevel] = useState('all');
 
-  useEffect(() => {
-    async function getScenarios() {
-      const res = await fetch('http://localhost:3001/scenarios');
-      if (!res.ok) {
-        throw new Error('Failed to fetch scenarios');
-      }
-      const data = await res.json();
-      console.log(data);
-      setScenarios(data);
-      setFilteredScenarios(data);
-    }
-    getScenarios();
-  }, []);
+
 
   useEffect(() => {
     if (level === 'all') {
@@ -39,16 +28,61 @@ export default function ScenariosPage() {
     }
   }, [level, scenarios]);
 
-  const levels = ['all', 'noob', 'amateur', 'fresher', 'senior'];
+  const [availableLevels, setAvailableLevels] = useState<string[]>(['all']);
+
+  useEffect(() => {
+    async function getScenarios() {
+      const token = localStorage.getItem('appToken');
+      if (!token) {
+        router.push('/login'); // Redirect to login if no token
+        return;
+      }
+      const res = await fetch('http://localhost:3001/scenarios', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) {
+        throw new Error('Failed to fetch scenarios');
+      }
+      const data = await res.json();
+      console.log(data);
+      setScenarios(data);
+      setFilteredScenarios(data);
+
+      // Dynamically get unique levels
+      const uniqueLevels = Array.from(new Set(data.map((s: any) => s.difficulty.toLowerCase())));
+      const customOrder = ['noob', 'noob-intermediate', 'amateur', 'fresher', 'intermediate', 'intermediate-advanced', 'senior', 'advanced'];
+      uniqueLevels.sort((a, b) => customOrder.indexOf(a) - customOrder.indexOf(b));
+      setAvailableLevels(['all', ...uniqueLevels]);
+    }
+    getScenarios();
+  }, []);
+
+  const router = useRouter(); // Add this line
+
+  const handleLogout = () => {
+    localStorage.removeItem('appToken');
+    localStorage.removeItem('user');
+    router.push('/login');
+  };
 
   return (
     <main className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-3xl font-bold">Scenarios</h1>
         <div className="flex items-center space-x-4">
+          <Link href="/leaderboard" className="text-blue-500 hover:underline">
+            Leaderboard
+          </Link>
+          <button onClick={handleLogout} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded-lg shadow-md transition duration-300 ease-in-out">
+            Logout
+          </button>
+        </div>
+        <div className="flex items-center space-x-4">
           <Label>Difficulty:</Label>
           <RadioGroup value={level} onValueChange={setLevel} className="flex space-x-4">
-            {levels.map(l => (
+            {availableLevels.map(l => (
               <div key={l} className="flex items-center space-x-2">
                 <RadioGroupItem value={l} id={l} />
                 <Label htmlFor={l} className="capitalize">{l}</Label>
