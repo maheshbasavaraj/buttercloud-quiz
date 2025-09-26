@@ -18,7 +18,9 @@
     "@prisma/client": "^6.16.2",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "google-auth-library": "^9.11.0",
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
