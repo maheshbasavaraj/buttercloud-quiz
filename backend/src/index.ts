@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import cors from 'cors';
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
+import { authenticateToken } from './middleware/auth'; // Add this import
 
 const prisma = new PrismaClient();
 const app = express();
