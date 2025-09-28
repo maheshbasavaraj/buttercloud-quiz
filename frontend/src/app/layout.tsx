@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+console.log("--- FRONTEND CODE IS UPDATING ---"); // Test message
 import { Inter } from "next/font/google";
 import "./globals.css";
 
