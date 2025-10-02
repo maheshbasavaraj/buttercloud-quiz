@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 const app = express();
 const port = 3001;
 
-app.use(cors({ origin: ['http://swebenchquiz.ddnsfree.com', 'http://localhost:3000'] }));
+app.use(cors({ origin: ['http://maheshbasavaraj.ddnsfree.com', 'http://swebenchquiz.ddnsfree.com', 'http://localhost:3000'] }));
 app.use(express.json());
 
 app.get('/scenarios', async (req, res) => {

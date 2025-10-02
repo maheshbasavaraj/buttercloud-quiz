@@ -18,7 +18,7 @@ export default function LoginPage() {
   const handleGoogleSuccess = async (credentialResponse: any) => { // credentialResponse contains id_token
     console.log('Google credentialResponse:', credentialResponse); // Debugging line
     // Send the Google ID token to your backend
-    const res = await fetch('http://localhost:3001/auth/google', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/google`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ idToken: credentialResponse.credential }), // id_token is in credentialResponse.credential
