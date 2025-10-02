@@ -52,7 +52,7 @@ export default function ScenarioPage({ params }: { params: { id: string } }) {
   // Fetch the current scenario
   useEffect(() => {
     async function getScenario() {
-      const res = await fetch(`http://localhost:3001/scenarios/${params.id}`);
+      const res = await fetch(`/api/scenarios/${params.id}`);
       if (!res.ok) throw new Error('Failed to fetch scenario');
       const data = await res.json();
       setScenario(data);

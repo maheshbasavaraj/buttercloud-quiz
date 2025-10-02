@@ -26,7 +26,7 @@ export default function ResultPage() {
     async function getResult() {
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:3001/submissions/${submissionId}`);
+        const res = await fetch(`/api/submissions/${submissionId}`);
         if (!res.ok) {
           throw new Error('Failed to fetch submission results');
         }
