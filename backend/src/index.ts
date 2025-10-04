@@ -34,7 +34,16 @@ app.get('/scenarios/:id', async (req, res) => {
   res.json(scenario);
 });
 
-app.post('/scenarios/:id/submit', authenticateToken, async (req, res) => {
+// Middleware to simulate user authentication in development
+const devAuthMiddleware = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  (req as any).user = { userId: 'clx123abcde' }; // Mock user with a fake ID
+  next();
+};
+
+// Use authentication middleware only in production
+const authMiddleware = process.env.NODE_ENV === 'production' ? authenticateToken : devAuthMiddleware;
+
+app.post('/scenarios/:id/submit', authMiddleware, async (req, res) => {
   const { id } = req.params;
   const { selections } = req.body;
 
@@ -123,7 +132,7 @@ app.get('/submissions/:id', async (req, res) => {
   }
 });
 
-app.get('/leaderboard', authenticateToken, async (req, res) => {
+app.get('/leaderboard', async (req, res) => {
   const leaderboard = await prisma.user.findMany({
     orderBy: {
       overallScore: 'desc',

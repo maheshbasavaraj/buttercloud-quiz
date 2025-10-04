@@ -1,8 +1,9 @@
 'use client';
 
-import { GoogleLogin } from '@react-oauth/google'; // Import GoogleLogin
+// import { GoogleLogin } from '@react-oauth/google'; // Import GoogleLogin
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { Button } from '@/components/ui/button'; // Using shadcn button
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function LoginPage() {
     }
   }, [router]);
 
+  /*
   const handleGoogleSuccess = async (credentialResponse: any) => { // credentialResponse contains id_token
     console.log('Google credentialResponse:', credentialResponse); // Debugging line
     // Send the Google ID token to your backend
@@ -39,15 +41,30 @@ export default function LoginPage() {
     console.log('Google Login Failed');
     alert('Google login failed. Please try again.');
   };
+  */
+
+  const handleMockLogin = () => {
+    // Simulate a successful login
+    const mockToken = 'mock-jwt-token';
+    const mockUser = { name: 'Test User', email: 'test@example.com' };
+    
+    localStorage.setItem('appToken', mockToken);
+    localStorage.setItem('user', JSON.stringify(mockUser));
+    
+    router.push('/scenarios'); // Redirect to a protected page
+  };
 
   return (
     <main className="container mx-auto p-4 flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-3xl font-bold mb-6">Login to ButterCloud Quiz</h1>
-      <GoogleLogin
+      <h1 className="text-3xl font-bold mb-6">Login to StackArchitect Quiz</h1>
+      {/* <GoogleLogin
         onSuccess={handleGoogleSuccess}
         onError={handleGoogleError}
         useOneTap
-      />
+      /> */}
+      <Button onClick={handleMockLogin}>
+        Login for Local Testing
+      </Button>
     </main>
   );
 }

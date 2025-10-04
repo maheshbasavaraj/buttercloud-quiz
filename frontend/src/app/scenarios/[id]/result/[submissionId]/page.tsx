@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { CheckCircle, AlertTriangle, XCircle } from 'lucide-react';
+import { getFriendlyComponentName } from '@/app/scenarios/[id]/quiz/page'; // Import the helper
 
 export default function ResultPage() {
   const params = useParams();
@@ -69,11 +70,13 @@ export default function ResultPage() {
           <CardTitle className="text-3xl">Results for: {scenario.title}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-4xl font-bold text-primary">Overall Score: {submission.score}</p>
-          <div className="mt-6 space-y-4">
-            <h3 className="text-2xl font-bold">Feedback:</h3>
-            <ul className="space-y-4">
-              {Object.entries(submission.feedback).map(([component, feedback]: [string, any]) => {
+          <div className="text-center mb-8">
+            <p className="text-5xl font-extrabold text-primary">Score: {submission.score}</p>
+          </div>
+          <div className="mt-6 space-y-6">
+            <h3 className="text-3xl font-bold text-center">Detailed Feedback</h3>
+            <ul className="space-y-6">
+              {Object.entries(submission.feedback).map(([componentType, feedback]: [string, any]) => {
                 const ratingStyles: { [key: string]: { icon: React.ReactNode, color: string } } = {
                   'Best': { icon: <CheckCircle className="inline-block mr-2 h-5 w-5" />, color: 'text-green-500' },
                   'Good': { icon: <CheckCircle className="inline-block mr-2 h-5 w-5" />, color: 'text-sky-500' },
@@ -83,17 +86,17 @@ export default function ResultPage() {
                 const style = ratingStyles[feedback.rating] || ratingStyles['Poor'];
 
                 return (
-                  <li key={component} className="p-4 bg-secondary/50 rounded-md">
-                    <strong className="block text-lg">{component}</strong>
-                    <div className="mt-2 text-sm text-muted-foreground">
-                      <span className="font-semibold text-foreground">Your Answer: </span>
-                      <span>{feedback.selectedOptionLabel}</span>
+                  <li key={componentType} className="p-5 bg-secondary/50 rounded-lg shadow-sm border border-border/50">
+                    <h4 className="text-xl font-bold mb-2">{getFriendlyComponentName(componentType)}</h4>
+                    <div className="mb-2">
+                      <span className="font-semibold text-foreground">Your Selection: </span>
+                      <span className="text-muted-foreground">{feedback.selectedOptionLabel}</span>
                     </div>
-                    <div className={`mt-2 font-semibold flex items-center ${style.color}`}>
+                    <div className={`flex items-center mb-2 ${style.color}`}>
                       {style.icon}
-                      <span>{feedback.rating}</span>
+                      <span className="font-semibold text-lg">Rating: {feedback.rating}</span>
                     </div>
-                    <p className="mt-1 text-muted-foreground">{feedback.justification}</p>
+                    <p className="text-muted-foreground text-sm">{feedback.justification}</p>
                   </li>
                 );
               })}
