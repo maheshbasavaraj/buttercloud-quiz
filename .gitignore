@@ -41,3 +41,49 @@ Thumbs.db
 # Scenario files
 *_scenarios.md
 scenarios.md
+/f/AI Projects/SET/buttercloud-quiz
+*.zip
+# --- secrets: never commit ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*
+*credential*.json
+*serviceAccount*.json
+id_rsa*
+id_ed25519*
+*.sqlite
+*.db
+*.log
+# --- os / editor ---
+desktop.ini
+*.tmp
+~$*
+*.swp
+.idea/
+.vscode/
+# --- python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg
+.tox/
+# --- node ---
+node_modules/
+.next/
+out/
+.cache/
+npm-debug.log*
+yarn-error.log*
+.turbo/
+coverage/
